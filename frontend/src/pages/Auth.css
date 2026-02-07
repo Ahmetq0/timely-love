@@ -1,0 +1,229 @@
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: 2.5rem;
+  border: 1px solid rgba(252, 231, 243, 0.8);
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.auth-card:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.auth-brand {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.auth-brand-logo {
+  width: 130px;
+  height: auto;
+  max-height: 100px;
+  object-fit: contain;
+  margin-bottom: 0.75rem;
+  filter: drop-shadow(0 2px 8px rgba(236, 72, 153, 0.2));
+}
+
+.auth-brand-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--pink-700);
+  letter-spacing: -0.02em;
+}
+
+.auth-brand-tagline {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  margin-top: 0.2rem;
+  font-weight: 500;
+}
+
+.auth-title {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--pink-800);
+  text-align: center;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
+}
+
+.auth-subtitle {
+  font-size: 0.9rem;
+  color: var(--gray-600);
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-800);
+}
+
+.input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  color: var(--gray-800);
+  background: var(--white);
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.input:hover {
+  border-color: var(--pink-200);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--pink-400);
+  box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.18);
+  background: var(--white);
+}
+
+.input::placeholder {
+  color: var(--gray-500);
+  opacity: 0.8;
+}
+
+.code-input-wrap {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.code-input-wrap .input {
+  flex: 1;
+}
+
+.code-hint {
+  font-size: 0.8rem;
+}
+
+.code-valid {
+  color: #059669;
+}
+
+.code-invalid {
+  color: #dc2626;
+}
+
+.form-error {
+  font-size: 0.875rem;
+  color: #dc2626;
+  background: #fef2f2;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #fecaca;
+}
+
+.form-success {
+  font-size: 0.875rem;
+  color: #059669;
+  background: #f0fdf4;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.5rem;
+  border: 1px solid #bbf7d0;
+}
+
+.btn {
+  padding: 0.9rem 1.35rem;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--pink-500) 0%, var(--pink-600) 100%);
+  color: var(--white);
+  margin-top: 0.25rem;
+  box-shadow: 0 2px 8px rgba(219, 39, 119, 0.25);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--pink-600) 0%, var(--pink-700) 100%);
+  box-shadow: 0 4px 14px rgba(219, 39, 119, 0.35);
+}
+
+.btn-outline {
+  background: var(--white);
+  color: var(--pink-600);
+  border: 1.5px solid var(--pink-300);
+  white-space: nowrap;
+}
+
+.btn-outline:hover:not(:disabled) {
+  background: var(--pink-50);
+  border-color: var(--pink-400);
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--gray-600);
+}
+
+.auth-footer a {
+  font-weight: 600;
+}
+
+.profile-card .profile-info {
+  background: var(--pink-50);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--pink-100);
+}
+
+.profile-info p {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.profile-info p:last-child {
+  margin-bottom: 0;
+}
+
+.profile-info strong {
+  color: var(--pink-700);
+  margin-right: 0.35rem;
+}

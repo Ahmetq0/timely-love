@@ -1,0 +1,289 @@
+.girl-activity-page {
+  min-height: 100vh;
+}
+
+.girl-activity-main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  padding-top: 5rem;
+}
+
+/* ----- Header ----- */
+.girl-activity-header {
+  display: flex;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem 1.75rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(253, 242, 248, 0.9) 100%);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--pink-100);
+  box-shadow: var(--shadow-soft);
+}
+
+.girl-activity-header-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, var(--pink-100) 0%, var(--pink-50) 100%);
+  border: 1px solid var(--pink-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.12);
+}
+
+.girl-activity-icon {
+  font-size: 2.25rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(236, 72, 153, 0.15));
+}
+
+.girl-activity-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.girl-activity-title {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--pink-800);
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.02em;
+}
+
+.girl-activity-desc {
+  font-size: 0.95rem;
+  color: var(--gray-600);
+  margin: 0 0 0.5rem;
+  line-height: 1.5;
+}
+
+.girl-activity-tips {
+  font-size: 0.85rem;
+  color: var(--gray-500);
+  margin: 0 0 0.5rem;
+  line-height: 1.45;
+}
+
+.girl-activity-tips-label {
+  font-weight: 600;
+  color: var(--pink-600);
+  margin-right: 0.25rem;
+}
+
+.girl-activity-count {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--pink-600);
+  background: var(--pink-100);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+/* ----- Form ----- */
+.girl-activity-form-section {
+  margin-bottom: 2rem;
+}
+
+.girl-activity-form-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--pink-700);
+  margin: 0 0 0.85rem;
+}
+
+.girl-activity-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem 1.75rem;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--pink-100);
+  box-shadow: var(--shadow-soft);
+  transition: box-shadow var(--transition);
+}
+
+.girl-activity-form:hover {
+  box-shadow: var(--shadow-card);
+}
+
+.girl-activity-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.girl-activity-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+.girl-activity-input {
+  width: 100%;
+}
+
+.girl-activity-submit {
+  margin-top: 0.25rem;
+}
+
+/* ----- List ----- */
+.girl-activity-list-section {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem 1.75rem;
+  border: 1px solid var(--pink-100);
+  box-shadow: var(--shadow-soft);
+}
+
+.girl-activity-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.girl-activity-list-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--pink-800);
+  margin: 0;
+}
+
+.girl-activity-list-count {
+  font-size: 0.8rem;
+  color: var(--gray-500);
+  font-weight: 500;
+}
+
+.girl-activity-empty-state {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  background: linear-gradient(180deg, var(--pink-50) 0%, rgba(255, 255, 255, 0.5) 100%);
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--pink-200);
+}
+
+.girl-activity-empty-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.75rem;
+  opacity: 0.8;
+}
+
+.girl-activity-empty-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--pink-800);
+  margin: 0 0 0.35rem;
+}
+
+.girl-activity-empty-text {
+  font-size: 0.9rem;
+  color: var(--gray-600);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.girl-activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.girl-activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  background: linear-gradient(135deg, var(--pink-50) 0%, rgba(255, 255, 255, 0.9) 100%);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.6rem;
+  border: 1px solid var(--pink-100);
+  transition: all var(--transition);
+}
+
+.girl-activity-item:last-child {
+  margin-bottom: 0;
+}
+
+.girl-activity-item:hover {
+  border-color: var(--pink-200);
+  box-shadow: 0 4px 14px rgba(236, 72, 153, 0.08);
+}
+
+.girl-activity-item-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  background: var(--pink-200);
+  color: var(--pink-800);
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.girl-activity-item-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.girl-activity-item-title {
+  font-weight: 600;
+  color: var(--gray-800);
+  font-size: 1rem;
+}
+
+.girl-activity-item-desc {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  line-height: 1.45;
+}
+
+.girl-activity-item-date {
+  font-size: 0.75rem;
+  color: var(--gray-500);
+  margin-top: 0.15rem;
+}
+
+.girl-activity-item-delete {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: var(--pink-200);
+  color: var(--pink-800);
+  border-radius: 10px;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.girl-activity-item-delete:hover {
+  background: var(--pink-300);
+  transform: scale(1.05);
+}
+
+@media (max-width: 600px) {
+  .girl-activity-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .girl-activity-main {
+    padding-top: 4rem;
+  }
+}
