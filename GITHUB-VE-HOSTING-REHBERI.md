@@ -70,7 +70,168 @@ git push -u origin main
 
 ---
 
-## BÖLÜM 2: Render ile Hosting
+## BÖLÜM 2: Kendi Hosting'inizde (VPS / Kendi Sunucu) Çalıştırma
+
+Kendi domain'inizle (örn. `timelylove.com`) tek adreste çalışması için **kendi sunucunuzda** veya **Node.js destekleyen bir VPS/hosting** kullanabilirsiniz. Evet, çalışır.
+
+### Ne tür hosting gerekir?
+- **Node.js** çalıştırabilen bir sunucu gerekir.
+- **Shared hosting** (klasik web hosting) çoğunda Node yok; **VPS** veya **Cloud sunucu** kullanın.
+- Örnek: **DigitalOcean**, **Hetzner**, **Turhost VPS**, **Natro**, **Radore**, veya herhangi bir Linux VPS.
+
+### Genel akış
+1. VPS/hosting alırsınız → SSH ile sunucuya bağlanırsınız
+2. Node.js kurarsınız
+3. Projeyi GitHub'dan sunucuya çekersiniz
+4. Build alıp uygulamayı çalıştırırsınız
+5. Domain'i bu sunucuya yönlendirirsiniz (A kaydı veya CNAME)
+
+---
+
+### Adım 1: Sunucuya bağlanın
+
+Hosting aldıktan sonra size **IP adresi**, **SSH kullanıcı adı** ve **şifre/SSH key** verilir.
+
+Mac/Linux’ta Terminal’de:
+```bash
+ssh kullanici@SUNUCU_IP_ADRESI
+```
+(Windows’ta PuTTY veya Windows Terminal kullanabilirsiniz.)
+
+---
+
+### Adım 2: Node.js kurun
+
+Sunucuda (SSH ile bağlıyken):
+
+```bash
+# Node.js 20 LTS (Ubuntu/Debian örnek)
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# Kontrol
+node -v   # v20.x.x
+npm -v
+```
+
+---
+
+### Adım 3: Projeyi sunucuya alın
+
+```bash
+# Örnek: /var/www altında
+sudo mkdir -p /var/www
+cd /var/www
+
+# GitHub'dan clone (repo public ise şifresiz)
+sudo git clone https://github.com/KULLANICI_ADINIZ/timely-love.git
+cd timely-love
+```
+
+(Git kurulu değilse: `sudo apt-get update && sudo apt-get install -y git`)
+
+---
+
+### Adım 4: Ortam değişkenleri ve Firebase
+
+```bash
+cd /var/www/timely-love/backend
+
+# .env dosyası oluştur
+sudo nano .env
+```
+
+İçine şunları yazın (kendi değerlerinizle):
+
+```
+PORT=3001
+JWT_SECRET=buraya-güclü-gizli-anahtar-yazin
+FIREBASE_SERVICE_ACCOUNT_PATH=./serviceAccountKey.json
+```
+
+Kaydedin (Ctrl+O, Enter, Ctrl+X).
+
+**serviceAccountKey.json** dosyasını bilgisayarınızdan sunucuya kopyalamanız gerekir. Bilgisayarınızda (yeni bir terminalde):
+
+```bash
+scp "/Users/ahmethan/Desktop/SGÖ TAKVİM PLANLAYICI/backend/serviceAccountKey.json" kullanici@SUNUCU_IP:/var/www/timely-love/backend/
+```
+
+---
+
+### Adım 5: Build ve başlatma
+
+```bash
+cd /var/www/timely-love
+
+# Bağımlılıklar + frontend build
+npm run build
+
+# Backend'i başlat (kalıcı çalışması için PM2 önerilir)
+sudo npm install -g pm2
+cd backend
+pm2 start server.js --name timely-love
+pm2 save
+pm2 startup   # Sunucu yeniden açılsa da uygulama başlasın
+```
+
+Uygulama `http://SUNUCU_IP:3001` adresinde çalışır.
+
+---
+
+### Adım 6: Domain ve HTTPS (isteğe bağlı)
+
+Kendi domain'inizi (örn. `timelylove.com`) bu sunucuya yönlendirmek için:
+
+1. **Domain DNS:** Domain satın aldığınız panelde **A kaydı** ekleyin:  
+   `@` (veya `www`) → Sunucu IP adresi
+
+2. **Nginx** ile 80/443 portuna yönlendirme ve HTTPS:
+   - Nginx kurun: `sudo apt-get install -y nginx`
+   - Site config: `sudo nano /etc/nginx/sites-available/timely-love`
+
+Örnek config:
+
+```nginx
+server {
+    listen 80;
+    server_name timelylove.com www.timelylove.com;
+    location / {
+        proxy_pass http://127.0.0.1:3001;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+- Aktifleştir: `sudo ln -s /etc/nginx/sites-available/timely-love /etc/nginx/sites-enabled/`
+- Test: `sudo nginx -t`
+- Yeniden başlat: `sudo systemctl reload nginx`
+
+3. **HTTPS** için Let's Encrypt:  
+   `sudo apt-get install certbot python3-certbot-nginx && sudo certbot --nginx -d timelylove.com -d www.timelylove.com`
+
+Bundan sonra site `https://timelylove.com` üzerinden açılır; URL’de başka bir şey olmaz.
+
+---
+
+### Güncelleme (yeni sürüm çıkınca)
+
+```bash
+cd /var/www/timely-love
+git pull
+npm run build
+pm2 restart timely-love
+```
+
+---
+
+## BÖLÜM 3: Render ile Hosting (Alternatif)
+
+(Render kullanmak istemiyorsanız bu bölümü atlayabilirsiniz.)
 
 ### Adım 1: Render Hesabı
 1. [render.com](https://render.com) adresine gidin
@@ -153,12 +314,21 @@ Render otomatik olarak yeni deploy başlatır.
 
 ## Özet Kontrol Listesi
 
+**GitHub:**
 - [ ] GitHub hesabı açıldı
 - [ ] Yeni repo oluşturuldu
 - [ ] Proje `git push` ile GitHub'a yüklendi
+
+**Kendi hosting (VPS) ile:**
+- [ ] VPS / Node.js destekleyen sunucu alındı
+- [ ] Node.js kuruldu
+- [ ] Proje clone edildi, `.env` ve `serviceAccountKey.json` eklendi
+- [ ] `npm run build` ve `pm2 start` ile uygulama çalışıyor
+- [ ] Domain A kaydı sunucuya yönlendirildi
+- [ ] (İsteğe bağlı) Nginx + SSL ile HTTPS açıldı
+
+**Render ile (alternatif):**
 - [ ] Render hesabı GitHub ile bağlandı
-- [ ] Web Service oluşturuldu
-- [ ] Build: `npm run build`, Start: `npm start`
-- [ ] `JWT_SECRET` eklendi
-- [ ] `FIREBASE_SERVICE_ACCOUNT_JSON` eklendi
+- [ ] Web Service oluşturuldu (Build: `npm run build`, Start: `npm start`)
+- [ ] `JWT_SECRET` ve `FIREBASE_SERVICE_ACCOUNT_JSON` eklendi
 - [ ] Deploy başarılı, site açılıyor

@@ -1,0 +1,115 @@
+================================================================================
+  "SİTEYE ULAŞILAMIYOR" – RAILWAY KONTROL LİSTESİ
+================================================================================
+
+Aşağıdakileri sırayla kontrol edin.
+
+--------------------------------------------------------------------------------
+1) RAILWAY'DA DEPLOY DURUMU
+--------------------------------------------------------------------------------
+
+  • Railway dashboard → Projeniz → Servise tıklayın.
+  • "Deployments" sekmesine girin.
+  • En son deploy'un durumu ne?
+      – "Success" / "Active" ise uygulama çalışıyor demektir.
+      – "Crashed" / "Failed" ise loglara bakın (aşağıda).
+
+  • "Logs" veya ilgili deploy'a tıklayıp "View Logs" açın.
+      – "Server running on port ..." yazıyorsa uygulama ayağa kalkmıştır.
+      – "Error", "Cannot find module", "Firebase" hatası varsa o satırı
+        okuyun; genelde JWT_SECRET veya FIREBASE_SERVICE_ACCOUNT_JSON
+        eksik/hatalıdır.
+
+--------------------------------------------------------------------------------
+2) RAILWAY'DA PUBLİC URL VAR MI?
+--------------------------------------------------------------------------------
+
+  • Aynı serviste "Settings" veya "Networking" / "Domains" bölümüne gidin.
+  • "Public Networking" / "Generate Domain" gibi bir seçenek var mı?
+  • Varsa tıklayıp bir domain üretin (örn. xxxxx.up.railway.app).
+  • Bu linke tarayıcıdan gidin. Bu link açılıyorsa sorun büyük ihtimalle
+    sadece kendi domain'inizle (Turhost) ilgilidir.
+
+  • Hiç domain üretmediyseniz Railway dışarıya adres vermez; mutlaka
+    "Generate Domain" veya "Add Public URL" yapın.
+
+--------------------------------------------------------------------------------
+3) HANGİ ADRESİ DENİYORSUNUZ?
+--------------------------------------------------------------------------------
+
+  • Önce Railway'ın verdiği adresi deneyin: https://xxxxx.up.railway.app
+  • Bu açılmıyorsa sorun deploy veya port/ayarlardadır.
+  • Sadece kendi domain'inizi (www.siteniz.com) deniyorsanız ve o açılmıyorsa
+    sorun DNS (Turhost CNAME) veya domain ekleme kısmındadır.
+
+--------------------------------------------------------------------------------
+4) BUILD VE START KOMUTLARI
+--------------------------------------------------------------------------------
+
+  Railway'da servis → Settings:
+
+  • Root Directory:  (boş bırakın; proje kökü)
+  • Build Command:  npm run build
+  • Start Command:  npm start
+  • Watch Paths:    (boş)
+
+  Root Directory yanlışlıkla "backend" yapıldıysa build çalışmaz; boş olmalı.
+
+--------------------------------------------------------------------------------
+5) ORTAM DEĞİŞKENLERİ (VARIABLES)
+--------------------------------------------------------------------------------
+
+  Servis → Variables sekmesinde mutlaka olmalı:
+
+  • JWT_SECRET
+        Örnek: a7k2m9x4p1q5w8e3r6t0
+        Boşluk veya tırnak kullanmayın.
+
+  • FIREBASE_SERVICE_ACCOUNT_JSON
+        serviceAccountKey.json dosyasının TÜM içeriği.
+        Mümkünse tek satır; tırnak içinde özel karakter sorun çıkarıyorsa
+        RAW Editor ile yapıştırın.
+
+  Değişken ekledikten sonra "Redeploy" yapın (Deployments → ... → Redeploy).
+
+--------------------------------------------------------------------------------
+6) TURHOST (KENDİ DOMAİN) AÇILMIYORSA
+--------------------------------------------------------------------------------
+
+  • Railway'da Custom Domain eklediniz mi? (www.siteniz.com vb.)
+  • Turhost DNS'te CNAME:
+        Ad:   www
+        Hedef: Railway'da yazan adres (örn. xxxxx.up.railway.app)
+  • DNS 5–30 dakika sürebilir; bir süre bekleyin.
+  • https://www.siteniz.com yerine bir kez http://www.siteniz.com deneyin.
+
+--------------------------------------------------------------------------------
+7) YAPTIĞINIZ DEĞİŞİKLİĞİ GITHUB'A ATIN
+--------------------------------------------------------------------------------
+
+  Sunucuda "0.0.0.0" dinlemesi için backend/server.js güncellendi.
+  Bunu deploy'a yansıtmak için:
+
+  cd "/Users/ahmethan/Desktop/SGÖ TAKVİM PLANLAYICI"
+  git add .
+  git commit -m "Railway 0.0.0.0 dinlemesi"
+  git push
+
+  Railway otomatik yeni deploy alır. Birkaç dakika sonra tekrar
+  Railway linkini (xxxxx.up.railway.app) deneyin.
+
+--------------------------------------------------------------------------------
+ÖZET
+--------------------------------------------------------------------------------
+
+  1) Deploy "Success" mi? Logda "Server running" var mı?
+  2) "Generate Domain" / public URL eklediniz mi?
+  3) Önce Railway linki (up.railway.app) açılıyor mu?
+  4) Build: npm run build, Start: npm start, Root boş.
+  5) JWT_SECRET ve FIREBASE_SERVICE_ACCOUNT_JSON doğru mu?
+  6) Son değişikliği git push ile gönderip yeni deploy aldınız mı?
+
+Hâlâ açılmıyorsa Railway → Deployments → son deploy → Logs kısmındaki
+kırmızı hata mesajını (tam metni) kopyalayıp paylaşın.
+
+================================================================================

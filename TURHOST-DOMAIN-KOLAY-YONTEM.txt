@@ -1,0 +1,161 @@
+================================================================================
+  TURHOST DOMAİN + RAILWAY İLE KOLAY YAYINA ALMA (ADIM ADIM)
+================================================================================
+
+Bu yöntemde sunucu (VPS) yönetmezsiniz. Sadece:
+  1) Projeyi GitHub'a atacaksınız
+  2) Railway'da hesap açıp projeyi orada çalıştıracaksınız
+  3) Turhost'tan aldığınız domain'i Railway'a yönlendireceksiniz
+
+Böylece sitede kendi domain'iniz görünür (örn. www.siteniz.com).
+
+--------------------------------------------------------------------------------
+BÖLÜM 1: GITHUB'A PROJE YÜKLEME
+--------------------------------------------------------------------------------
+
+Adım 1.1  GitHub'da giriş yapın (github.com).
+
+Adım 1.2  Sağ üst + → New repository.
+
+Adım 1.3  Repository name: timely-love (veya istediğiniz isim).
+           Public seçin. "Add a README" işaretini KAPATIN. Create repository.
+
+Adım 1.4  Bilgisayarınızda Terminal açın. Proje klasörüne gidin:
+
+           cd "/Users/ahmethan/Desktop/SGÖ TAKVİM PLANLAYICI"
+
+Adım 1.5  Sırayla şu komutları yazın:
+
+           git init
+           git add .
+           git commit -m "İlk yükleme"
+           git remote add origin https://github.com/KULLANICI_ADINIZ/timely-love.git
+           git branch -M main
+           git push -u origin main
+
+           (KULLANICI_ADINIZ yerine kendi GitHub kullanıcı adınızı yazın.)
+
+Adım 1.6  GitHub repo sayfasını yenileyin; tüm dosyalar görünmüş olmalı.
+
+--------------------------------------------------------------------------------
+BÖLÜM 2: RAILWAY'DA HESAP VE PROJE AÇMA
+--------------------------------------------------------------------------------
+
+Adım 2.1  railway.app adresine gidin.
+
+Adım 2.2  "Login" veya "Start a New Project" → "Login with GitHub" seçin.
+           GitHub ile giriş yapın ve Railway'a yetki verin.
+
+Adım 2.3  "New Project" tıklayın.
+
+Adım 2.4  "Deploy from GitHub repo" seçin.
+           Repo listesinden "timely-love" (veya verdiğiniz isim) reponuzu bulun.
+           "Configure" veya repo adına tıklayın.
+
+Adım 2.5  Repo seçildikten sonra Railway bir servis oluşturur.
+           Oluşan servise (kutu/kart) tıklayın.
+
+Adım 2.6  "Variables" sekmesine girin (veya Settings → Variables).
+           "New Variable" veya "RAW Editor" ile şu iki değişkeni ekleyin:
+
+           JWT_SECRET = Güçlü rastgele bir metin (örn: a7k2m9x4p1q5w8e3r6t0)
+
+           FIREBASE_SERVICE_ACCOUNT_JSON = serviceAccountKey.json dosyasının
+                  TÜM içeriği. (Backend klasöründeki bu dosyayı açıp tüm metni
+                  kopyalayıp buraya yapıştırın. Mümkünse tek satır yapın.)
+
+Adım 2.7  "Settings" sekmesine gidin.
+           "Build" bölümünde:
+             Build Command:  npm run build
+           "Deploy" / "Start" bölümünde:
+             Start Command:  npm start
+           Root Directory boş bırakın (proje kökü).
+
+Adım 2.8  "Deployments" sekmesinden build/deploy durumunu izleyin.
+           İlk deploy 3–5 dakika sürebilir. "Success" veya yeşil tik çıkınca biter.
+
+Adım 2.9  "Settings" → "Networking" veya "Domains" bölümüne gidin.
+           "Generate Domain" tıklayın. Size bir adres verilir (örn. xxx.up.railway.app).
+           Bu linke tıklayıp site açılıyorsa Bölüm 2 tamam.
+
+--------------------------------------------------------------------------------
+BÖLÜM 3: TURHOST DOMAİN'İ RAILWAY'A YÖNLENDİRME
+--------------------------------------------------------------------------------
+
+Adım 3.1  Railway'da: Servis sayfanızda → "Settings" → "Networking" / "Domains".
+
+Adım 3.2  "Custom Domain" bölümünü bulun. "Add Custom Domain" veya
+           "Add domain" tıklayın.
+
+Adım 3.3  Turhost'tan aldığınız domain'i yazın. Örnek:
+           www.siteniz.com   veya   siteniz.com.tr
+           Ekleyin / Save.
+
+Adım 3.4  Railway size bir CNAME hedefi gösterecek (örn. xxx.up.railway.app
+           veya özel bir hostname). Bunu not alın.
+
+Adım 3.5  Turhost panele girin (müşteri paneli).
+
+Adım 3.6  Domain yönetimi / DNS ayarları sayfasına gidin.
+          (Domain adına tıklayıp "DNS Düzenle" / "Nameservers" / "DNS Kayıtları"
+           gibi bir menü olur.)
+
+Adım 3.7  Yeni kayıt ekleyin:
+
+           Tür:    CNAME
+           Ad:     www   (veya sadece www kullanacaksanız)
+           Hedef:  xxx.up.railway.app
+                   (Railway'da yazan CNAME hedefini aynen yazın.)
+           TTL:    Otomatik veya 3600
+
+           Kaydet.
+
+Adım 3.8  Kök domain (siteniz.com) için de açılsın istiyorsanız:
+           Railway'da "siteniz.com" (www'suz) domain olarak da ekleyin.
+           Gerekirse Turhost'ta A kaydı veya CNAME ile Railway'ın
+           söylediği hedefe yönlendirin. Çoğu durumda www CNAME yeterli.
+
+Adım 3.9  DNS yayılımı 5–30 dakika sürebilir. Bekleyin.
+
+Adım 3.10 Tarayıcıda https://www.siteniz.com (veya eklediğiniz domain) açın.
+           Siteniz kendi domain'inizle açılıyorsa işlem tamam.
+
+--------------------------------------------------------------------------------
+ÖZET KONTROL LİSTESİ
+--------------------------------------------------------------------------------
+
+  [ ] GitHub'a proje yüklendi (git push)
+  [ ] Railway'da New Project → Deploy from GitHub repo (timely-love)
+  [ ] Build Command: npm run build
+  [ ] Start Command: npm start
+  [ ] JWT_SECRET ve FIREBASE_SERVICE_ACCOUNT_JSON eklendi
+  [ ] Railway'da site açılıyor (up.railway.app linki)
+  [ ] Railway'da Custom Domain eklendi (www.siteniz.com vb.)
+  [ ] Turhost'ta CNAME: www → (Railway'ın verdiği hedef)
+  [ ] Bir süre sonra https://www.siteniz.com çalışıyor
+
+--------------------------------------------------------------------------------
+GÜNCELLEME YAPMAK İSTEDİĞİNİZDE
+--------------------------------------------------------------------------------
+
+Bilgisayarınızda projede değişiklik yaptıktan sonra:
+
+  cd "/Users/ahmethan/Desktop/SGÖ TAKVİM PLANLAYICI"
+  git add .
+  git commit -m "Güncelleme"
+  git push
+
+Railway otomatik olarak yeni deploy alır. Birkaç dakika sonra canlı sitede
+güncellemeler görünür.
+
+--------------------------------------------------------------------------------
+SORUN ÇIKARSA
+--------------------------------------------------------------------------------
+
+  - Build failed: Railway → Deployments → ilgili deploy'a tıklayıp loglara bakın.
+  - Site açılmıyor: JWT_SECRET ve FIREBASE_SERVICE_ACCOUNT_JSON doğru mu
+    kontrol edin. JSON tek satır ve tırnak içinde özel karakter kaçırılmış olabilir.
+  - Domain açılmıyor: Turhost CNAME hedefini Railway'daki ile birebir aynı
+    yazdığınızdan emin olun; 30 dk kadar bekleyin.
+
+================================================================================

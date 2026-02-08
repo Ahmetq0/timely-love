@@ -1,9 +1,10 @@
 {
   "name": "timely-love",
   "private": true,
+  "engines": { "node": ">=18" },
   "scripts": {
     "build": "cd frontend && npm install && npm run build && cd ../backend && npm install",
-    "start": "cd backend && node server.js",
+    "start": "node backend/server.js",
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && npm run dev"
   }

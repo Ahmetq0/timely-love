@@ -1,0 +1,99 @@
+================================================================================
+  RENDER YERİNE KULLANABİLECEĞİNİZ HOSTİNG SEÇENEKLERİ
+================================================================================
+
+Hepsi: GitHub'dan proje çeker, kendi domain'inizi (Turhost) bağlayabilirsiniz.
+
+--------------------------------------------------------------------------------
+1) RAILWAY (En kolay – önerilen)
+--------------------------------------------------------------------------------
+
+  Site: https://railway.app
+
+  Artıları: Çok basit arayüz, GitHub bağlantısı kolay, custom domain var.
+  Ücretsiz: Aylık ~5$ kredi (küçük proje için bir süre yeter).
+
+  Kısa adımlar:
+    1. railway.app → Login with GitHub
+    2. New Project → Deploy from GitHub repo → "timely-love" seçin
+    3. Repo eklendikten sonra servise tıklayın → Variables sekmesi
+    4. Şunları ekleyin:
+       JWT_SECRET = güçlü-bir-anahtar
+       FIREBASE_SERVICE_ACCOUNT_JSON = serviceAccountKey.json içeriği (tek satır)
+    5. Settings → Build: "npm run build" (veya Root Directory boş, Build: npm run build)
+       Start: "npm start" (veya Start Command: npm start)
+    6. Settings → Networking → Custom Domain → "www.siteniz.com" ekleyin
+    7. Turhost DNS: CNAME www → (Railway'ın verdiği hedef, örn. xxx.railway.app)
+
+  Detay: Railway dokümantasyonunda "Custom Domain" bölümüne bakın.
+
+--------------------------------------------------------------------------------
+2) FLY.IO
+--------------------------------------------------------------------------------
+
+  Site: https://fly.io
+
+  Artıları: Ücretsiz tier, custom domain, güvenilir.
+  Biraz daha teknik: flyctl (komut satırı) veya web dashboard kullanılır.
+
+  Kısa adımlar:
+    1. fly.io → Sign up (GitHub ile)
+    2. Bilgisayarınızda: brew install flyctl  (Mac) veya fly.io sitesinden kurun
+    3. flyctl auth login
+    4. Proje klasöründe: flyctl launch  (sorulara cevap verin)
+    5. flyctl secrets set JWT_SECRET=güçlü-anahtar
+    6. flyctl secrets set FIREBASE_SERVICE_ACCOUNT_JSON='{"type":"service_account",...}'
+       (JSON'u tek tırnak içinde tek satır yapın)
+    7. flyctl deploy
+    8. flyctl certs add www.siteniz.com
+    9. Turhost: CNAME www → siteniz.fly.dev (veya Fly'ın söylediği)
+
+  Dokümantasyon: fly.io/docs
+
+--------------------------------------------------------------------------------
+3) KOYEB
+--------------------------------------------------------------------------------
+
+  Site: https://www.koyeb.com
+
+  Artıları: Ücretsiz tier, Avrupa sunucuları, GitHub + custom domain.
+  Arayüz: Render’a benzer.
+
+  Kısa adımlar:
+    1. koyeb.com → Sign up with GitHub
+    2. Create App → GitHub → timely-love repo seçin
+    3. Build: npm run build   Run: npm start
+    4. Environment variables: JWT_SECRET, FIREBASE_SERVICE_ACCOUNT_JSON
+    5. Deploy sonrası Domain sekmesinden kendi domain'inizi ekleyin
+    6. Turhost DNS: CNAME (Koyeb’in verdiği hedefe)
+
+--------------------------------------------------------------------------------
+4) ADAPTABLE
+--------------------------------------------------------------------------------
+
+  Site: https://adaptable.io
+
+  Artıları: GitHub’dan tek tık deploy, ücretsiz plan.
+  Adımlar: Siteye gir → GitHub bağla → repo seç → env ekle → deploy.
+  Custom domain: Ayarlardan eklenir, DNS’te CNAME ile yönlendirirsiniz.
+
+--------------------------------------------------------------------------------
+5) VERCEL (Frontend) + RAILWAY / FLY (Backend)
+--------------------------------------------------------------------------------
+
+  İki ayrı servis: Frontend Vercel’de, backend Railway veya Fly’da.
+  Daha karmaşık; API URL’ini frontend’de (VITE_API_URL) backend adresine
+  ayarlamanız gerekir. İlk aşamada 1–4 arası tek servis daha kolay.
+
+--------------------------------------------------------------------------------
+ÖZET TAVSİYE
+--------------------------------------------------------------------------------
+
+  • En az uğraş: Railway (GitHub + env + custom domain).
+  • Ücretsiz kalıp biraz komut satırı kullanabilirseniz: Fly.io.
+  • Render’a en yakın deneyim: Koyeb veya Adaptable.
+
+Turhost domain hepsinde aynı mantık: Panelden "Custom Domain" ekleyin,
+Turhost DNS’te CNAME ile o servisin verdiği hedefe yönlendirin.
+
+================================================================================
